@@ -23,11 +23,14 @@ module NormFramework
       steps << { pattern: pattern, block: block }
     end
 
-    def call(pattern)
+    # The step_name variable below is a string that may or
+    # may not match the regex pattern of one of the hashes
+    # in the steps array.
+    def call(step_name)
       vars = nil
-      step = steps.find { |s| vars = s[:pattern].match(pattern) }
+      step = steps.find { |s| vars = s[:pattern].match(step_name) }
 
-      raise "Undefined step '#{ pattern }'" unless step
+      raise "Undefined step '#{ step_name }'" unless step
 
       if vars.length > 1
         step[:block].call(*vars[1..-1])
