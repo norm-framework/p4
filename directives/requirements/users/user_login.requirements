@@ -1,0 +1,28 @@
+User Login
+==========
+(Derived from: http://www.allaboutagile.com/user-story-example/)
+
+As a registered user, I want to log in,
+so I can access subscriber content.
+
+Success:
+
+  * When I check 'Remember Me' and log in succesfully,
+    I won't have to login again next time
+
+  * When I uncheck 'Remember Me' and log in successfully,
+    I should be asked to login next time
+
+  * There should be a 'Forgot Password' mechanism
+
+Failure:
+
+  * If I input the wrong username, the error message
+    should be 'Unknown user or wrong password'
+
+  * If I input the wrong password, the error message
+    should be 'Unknown user or wrong password'
+
+  * If I attempt to login and my account is expired,
+    the error should be 'Account expired. Please contact
+    support.'
