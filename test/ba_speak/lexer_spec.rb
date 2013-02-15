@@ -130,6 +130,30 @@ module BaSpeak
       output.must_equal tokens
     end
 
+    it "must tokenize a requirements file with arbitrary text right under the group name" do
+      output = tokenize <<-EOF
+                 User Login
+                 ==========
+                 (Derived from: http://www.allaboutagile.com/user-story-example/)
+
+                 As a registered user, I want to log in,
+                 so I can access subscriber content.
+
+                 Success:
+
+                   * When I check 'Remember Me' and log in succesfully,
+                     I won't have to login again next time
+               EOF
+      tokens = [
+                 [:GROUP, 'User Login'],
+                 [:TEXT, '(Derived from: http://www.allaboutagile.com/user-story-example/)'],
+                 [:TEXT, 'As a registered user, I want to log in, so I can access subscriber content.'],
+                 [:TEXT, 'Success:'],
+                 [:REQUIREMENT, 'When I check \'Remember Me\' and log in succesfully, I won\'t have to login again next time']
+               ]
+      output.must_equal tokens
+    end
+
     def tokenize(data)
       Lexer.new.tokenize(data)
     end

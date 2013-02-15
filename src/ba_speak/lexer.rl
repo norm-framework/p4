@@ -5,9 +5,9 @@
 
   newline       = ('\n' | '\r\n');
   tab_or_space  = [\t ];
-  string        = [A-Za-z0-9] print*;
+  string        = [A-Za-z0-9()] print*;
   req_string    = [A-Za-z0-9<] print*;
-  underline     = [=][=][=][=]*;
+  underline     = '===' '='*;
   pipe          = '|';
 
   group_name  = string tab_or_space* newline tab_or_space* underline;
@@ -60,7 +60,7 @@ module BaSpeak
     end
 
     def emit_text(token_array, data, ts, te)
-      value = data[ts...te].pack("c*").strip.split.join(' ')
+        value = data[ts...te].pack("c*").strip.split.join(' ')
       token_array << [:TEXT, value]
     end
 
