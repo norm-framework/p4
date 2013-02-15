@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem "minitest"
-gem "minitest-colorize", :git => 'git://github.com/nohupbrasil/minitest-colorize.git', :branch => 'master'
+gem "minitest-colorize", :git => 'git://github.com/sobrinho/minitest-colorize.git', :branch => 'master'
 
 group :development do
   gem "guard"
