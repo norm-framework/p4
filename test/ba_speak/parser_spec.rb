@@ -149,6 +149,33 @@ module BaSpeak
       output.must_equal nodes
     end
 
+    it "must parse groups followed by arbitrary text" do
+      output = parse <<-EOF
+                 User Login
+                 ==========
+
+                 (Derived from: http://www.allaboutagile.com/user-story-example/)
+
+                 As a registered user, I want to log in,
+                 so I can access subscriber content.
+
+                 Success:
+
+                   * When I check 'Remember Me' and log in succesfully,
+                     I won't have to login again next time
+
+                   * When I uncheck 'Remember Me' and log in successfully,
+                     I should be asked to login next time
+               EOF
+      nodes = RootNode.new('', [
+                GroupNode.new('User Login', [
+                  RequirementNode.new('When I check \'Remember Me\' and log in succesfully, I won\'t have to login again next time'),
+                  RequirementNode.new('When I uncheck \'Remember Me\' and log in successfully, I should be asked to login next time')
+                ])
+              ])
+      output.must_equal nodes
+    end
+
     def parse(file, show_tokens = false)
       Parser.new.parse(file, show_tokens)
     end
