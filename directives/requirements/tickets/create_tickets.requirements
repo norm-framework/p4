@@ -1,19 +1,21 @@
 Create Tickets
 ==============
 
-  * A user who has a role of <Role Name>
-    <Can or Cannot Create> tickets in it
+  * A <Role> <Can or Cannot Create> tickets
 
     Examples:
-      | Role Name | Can or Cannot Create |
-      |-----------|----------------------|
-      | Manager   | Can Create           |
-      | Member    | Can Create           |
-      | Guest     | Cannot Create        |
+      | Role    | Can or Cannot Create |
+      |---------|----------------------|
+      | Manager | Can Create           |
+      | Member  | Can Create           |
+      | Guest   | Cannot Create        |
 
     Notes:
-      Arbitrary text that the business analyst or domain expert
-      thinks might help the development team understand the
-      problem much better. Blah blah blah.
+      Arbitrary text that the business analyst or
+      domain expert thinks might help the development
+      team understand the problem much better. This
+      is ignored by the parser.
 
-  * Newly created tickets have a status of 'Active'
+  * New tickets have a status of 'Active'
+
+
