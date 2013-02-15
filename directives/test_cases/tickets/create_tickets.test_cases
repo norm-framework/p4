@@ -1,5 +1,5 @@
 Test Case:
-  A user who has a role of (.+) can create tickets in it
+  A (.+) can create tickets
 
   Variables:
     * Role Name   = 'Temp'
@@ -23,7 +23,7 @@ Test Case:
 
 
 Test Case:
-  Newly created tickets have a status of '(.+)'
+  New tickets have a status of '(.+)'
 
   Variables:
     * Status = $1
@@ -33,7 +33,7 @@ Test Case:
 
 
 Test Case:
-  A user who has a role of (.+) cannot create tickets in it
+  A (.+) cannot create tickets
 
   Variables:
     * Role Name = $1
