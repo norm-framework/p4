@@ -5,7 +5,7 @@
 
   newline       = ('\n' | '\r\n');
   tab_or_space  = [\t ];
-  string        = [A-Za-z0-9()] print*;
+  string        = [A-Za-z0-9\(\)\[\]\{\}] print*;
   req_string    = [A-Za-z0-9<] print*;
   underline     = '===' '='*;
   pipe          = '|';
