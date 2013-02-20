@@ -3,6 +3,7 @@
 
   machine lexer;
 
+  uri_marker    = 'file://';
   newline       = ('\n' | '\r\n');
   tab_or_space  = [\t ];
   string        = [A-Za-z0-9\(\)\[\]\{\}] print*;
@@ -10,13 +11,15 @@
   underline     = '===' '='*;
   pipe          = '|';
 
+  file_uri    = uri_marker print* newline;
   group_name  = string tab_or_space* newline tab_or_space* underline;
-  text        = string tab_or_space* (newline tab_or_space* string)* (newline newline)*;
+  text        = (string -- uri_marker) tab_or_space* (newline tab_or_space* string)* (newline newline)*;
   requirement = '* ' req_string tab_or_space* (newline tab_or_space* req_string)* (newline newline)*;
   table_row   = pipe print* pipe;
 
   main := |*
 
+    file_uri    => { emit_source_path(token_array, data, ts, te) };
     group_name  => { emit_group_name(token_array, data, ts, te)  };
     requirement => { emit_requirement(token_array, data, ts, te) };
     table_row   => { emit_row(data, token_array, ts, te) };
@@ -36,10 +39,15 @@ module BaSpeak
       %% write data;
       # %% this just fixes syntax highlighting in TextMate et al.
     end
+    
+    def emit_source_path(token_array, data, ts, te)
+      value = data[ts...te].pack("c*").strip
+      token_array << [:FILE, { uri: value }]
+    end
 
     def emit_group_name(token_array, data, ts, te)
       value = data[ts...te].pack("c*").split(/=+/)[0].strip
-      token_array << [:GROUP, value]
+      token_array << [:GROUP, { value: value, offset: ts }]
     end
 
     def emit_row(data, target_array, ts, te)
@@ -48,20 +56,24 @@ module BaSpeak
       # ignore borders
       return if /^\-+/ =~ cells
 
-      target_array << [:ROW, 'Row']
+      target_array << [:ROW, { offset: ts }]
       cells.split('|').each do |cell|
-        target_array << [:CELL, cell.strip]
+        target_array << [:CELL, { value: cell.strip }]
       end
     end
 
     def emit_requirement(token_array, data, ts, te)
       value = data[ts...te].pack("c*").gsub(/^\* /, '').split.join(' ')
-      token_array << [:REQUIREMENT, value]
+      token_array << [:REQUIREMENT, { value: value, offset: ts }]
     end
 
     def emit_text(token_array, data, ts, te)
         value = data[ts...te].pack("c*").strip.split.join(' ')
-      token_array << [:TEXT, value]
+      token_array << [:TEXT, { value: value, offset: ts }]
+    end
+    
+    def self.tokenize(data)
+      new.tokenize(data)
     end
 
     def tokenize(data)

@@ -1,5 +1,6 @@
 class BaSpeak::Parser
 
+  token FILE
   token GROUP
   token REQUIREMENT
   token TEXT
@@ -7,9 +8,9 @@ class BaSpeak::Parser
   token CELL
 
   rule
-    Root:
-      /* empty array */           { result = RootNode.new }
-    | Groups                      { result = RootNode.new('', val[0]) }
+    Files: 
+    | FILE                        { result = FileNode.new(val[0])         }
+    | FILE Groups                 { result = FileNode.new(val[0], val[1]) }
     ;
 
     Groups:
@@ -41,17 +42,17 @@ class BaSpeak::Parser
     ;
 
     Table:
-      Rows                        { result = [ ExamplesNode.new('', val[0]) ] }
+      Rows                        { result = [ TableNode.new({ offset: val[0][0].offset }, val[0]) ] }
     ;
 
     Rows:
-      ROW Cells                   { result = [ RowNode.new('', val[1]) ] }
-    | ROW Cells Rows              { result = [ RowNode.new('', val[1]) ] + val[2] }
+      ROW Cells                   { result = [ RowNode.new(val[0], val[1]) ] }
+    | ROW Cells Rows              { result = [ RowNode.new(val[0], val[1]) ] + val[2] }
     ;
 
     Cells:
-      CELL                        { result = [ val[0] ] }
-    | CELL Cells                  { result = [ val[0] ] + val[1] }
+      CELL                        { result = [ val[0][:value] ] }
+    | CELL Cells                  { result = [ val[0][:value] ] + val[1] }
     ;
 
 end
@@ -60,12 +61,16 @@ end
   require 'ba_speak/nodes'
 
 ---- inner
-  def parse(code, show_tokens=false)
-    @tokens = Lexer.new.tokenize(code)
-    puts @tokens.inspect if show_tokens
-    do_parse
+  def self.parse(string, show_tokens=false)
+    new.parse(string, show_tokens)
   end
 
   def next_token
     @tokens.shift
+  end
+  
+  def parse(string, show_tokens)
+    @tokens = Lexer.new.tokenize(string)
+    puts @tokens.inspect if show_tokens
+    do_parse
   end
