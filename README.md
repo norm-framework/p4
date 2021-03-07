@@ -1,5 +1,12 @@
 Norm
 ====
+
+**NOTE**: This was the 4th prototype before I settled on the design that
+is now encoded in the [ManaMana Project](https://github.com/ManaManaFramework/manamana).
+I'm just keeping this as well as prototypes [1](https://github.com/norm-framework/p1),
+[2](https://github.com/norm-framework/p2), and [3](https://github.com/norm-framework/p3)
+for historical purposes.
+
 Norm is a virtual robot that helps software teams auto-verify
 business requirements against an application. Feed him requirement
 files, their corresponding test cases, and the definition of
